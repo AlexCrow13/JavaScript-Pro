@@ -1,0 +1,138 @@
+.hidden {
+  display: none;
+}
+
+.block {
+  display: flex;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100px;
+  background: linear-gradient(to right, #fff, #000);
+}
+
+.btn-cart {
+  height: 40px;
+  width: 100px;
+  margin-right: 30px;
+  border-radius: 10px;
+  border-collapse: collapse;
+  border-color: #fff;
+  background-color: #fff;
+  color: #000;
+  font-size: 20px;
+  font-weight: 700;
+  transition: 0.3s;
+}
+
+.btn-cart:hover {
+  background-color: #000;
+  color: #fff;
+  cursor: pointer;
+}
+
+.products{
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin-top: 50px;
+}
+
+.product-item{
+  width: 150px;
+  border: 1px solid black;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 10px;
+  margin: 20px;
+}
+
+.by-btn{
+  height: 30px;
+  background-color:black;
+  color: white;
+  border-radius: 10px;
+  transition: 0.4s;
+}
+
+.by-btn:hover{
+  cursor: pointer;
+  background-color:white;
+  color: black;
+}
+
+.by-btn-used{
+  height: 30px;
+  background-color:white;
+  color: black;
+  border-radius: 10px;
+  transition: 0.4s;
+}
+
+.cart{
+  width: 250px;
+  border: 1px solid black;
+  position: absolute;
+  top: 75px;
+  right: 8px;
+  background-color: rgb(201, 198, 198);
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+}
+
+.cart-price{
+  font-size: 20px;
+}
+
+.total-price{
+  font-weight: 700;
+}
+
+.cart-item{
+  display: flex;
+  margin-top: 10px;
+  align-items: center;
+  justify-content: space-between;
+  width: 220px;
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 5px;
+  background: white;
+}
+
+.next{
+  font-weight: 700;
+  width: 150px;
+  height: 30px;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 10px;
+  background-color:rgb(247, 133, 133)
+}
+
+.close, .clear{
+  width: 150px;
+  height: 30px;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 10px;
+  background-color:rgb(185, 182, 182)
+}
+
+.clear:hover{
+  background-color:#fff;
+}
+
+.next:hover{
+  background-color:#fff;
+}
+
+ .close:hover{
+  background-color:#fff;
+}
