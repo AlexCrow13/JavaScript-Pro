@@ -2,10 +2,12 @@ class Products {
     data = [];
     products = [];
     container = null;
+    totalSum = 0;
 
     constructor(selector) {
         this.container = document.querySelector(selector);
         this._fetchData();
+        this._sumProducts();
         this._render();
     }
 
@@ -24,6 +26,13 @@ class Products {
             this.products.push(product);
             this.container.insertAdjacentHTML('beforeend', product.render())
         }
+    }
+
+    _sumProducts() {
+        this.totalSum = this.data.reduce(function (sum, itemPrice) {
+            return sum + itemPrice.price;
+        }, 0 );
+        console.log(this.totalSum);
     }
 }
 
@@ -54,13 +63,27 @@ class ProductItem {
 class Cart {
     // some - cartItems array
 
-    // someMethod() - метод делает то-то
+    // openPreviewCart() - открыть предварительный просмотр корзины (выпадающая корзина). Обработка события наведения на кнопку корзины ( по типу hover)
+
+    // openPageCart() - открыть страницу корзины. Обработка клика по кнопке "Корзина" или по кнопке "Перейти в корзину" в предварительном просмотре
+
+    // addItem() - добавление товара в корзину. Обработка клика по кнопке купить и добаление объекта товара в массив cartItems array
+
+    //_deleteItem() -  удаление товара из корзины. Обработка клика по кнопке "Удалить", определение удаляемого товара, удаление
+
+    // _calculateCartCost() - подсчет стоимости товаров в корзине
+
 }
 
 class CartItem {
     // some - cartItems array
 
-    // someMethod() - метод делает то-то
+    // renderPreview() -  создание разметки для выпадающей корзины
+
+    // renderPage() -  создание разметки для страницы корзины
+
+    // _changeCountProducts() - изменение количества товара в корзине. Обработка поля input  в разметке товара и изменение общей стоимости одного товара в зависимости от его количества
+
 }
 
 const list = new Products('.products');
