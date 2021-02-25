@@ -56,10 +56,14 @@ button{
 }
 
 .cart-desc{
-    width: 200px;
+    width: 250px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.cart-item-count{
+    width: 40px;
 }
 
 .del-btn{
@@ -74,7 +78,7 @@ button{
     grid-template-columns: repeat(auto-fit, 200px);
     grid-template-rows: 1fr;
     padding: 40px 80px;
-    justify-content: space-between;
+    /*justify-content: space-between;*/
 }
 p {
     margin: 0 0 5px 0;

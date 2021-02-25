@@ -1,32 +1,52 @@
+const API = `https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses`;
+
+let getRequest = (url, cb) => {
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState !== 4) {
+            return;
+        }
+
+        if (xhr.status !== 200) {
+            console.log('some error');
+            return;
+        }
+
+        cb(xhr.responseText);
+    }
+};
+
 class Products {
-    data = [];
     products = [];
     container = null;
 
     constructor(selector) {
         this.container = document.querySelector(selector);
-        this._fetchData();
-        this._render();
+        this._fetchData()
+            .then(() => this._render());
     }
 
     _fetchData() {
-        this.data = [
-            { title: 'Notebook', id: 1, price: 2000 },
-            { title: 'Keyboard', id: 2, price: 200 },
-            { title: 'Mouse', id: 3, price: 100 },
-            { title: 'Gamepad', id: 4, price: 87 }
-        ];
+        return fetch(`${API}/catalogData.json`)
+            .then(result => result.json())
+            .then(data => {
+                for(let product of data) {
+                    this.products.push(new ProductItem(product));
+                }
+            })
     }
 
     _render() {
-        for (let data of this.data) {
-            const product = new ProductItem(data);
-            this.products.push(product);
+        for (let product of this.products) {
+            if (product.rendered){
+                continue;
+            }
             this.container.insertAdjacentHTML('beforeend', product.render())
         }
     }
 
-    _sumProducts() {
+    calcSum() {
         return this.products.reduce((sum, itemPrice) => sum += itemPrice.price, 0 )
     }
 }
@@ -36,14 +56,16 @@ class ProductItem {
     price = 0;
     id = 0;
     img = '';
+    rendered = false;
 
     constructor(product, img = 'https://placehold.it/200x150') {
-        ({ title: this.title, price: this.price, id: this.id } = product);
+        ({ product_name: this.title, price: this.price, id_product: this.id } = product);
         this.img = img;
     }
 
     render() {
-        return `<div class="product-item">
+        this.rendered = true;
+        return `<div class="product-item" data-id = "${this.id}">
                  <img src="${this.img}" alt="${this.title}">
                  <div class="desc">
                      <h3>${this.title}</h3>
@@ -56,75 +78,99 @@ class ProductItem {
 
 
 class Cart {
-    cartProducts =[];
+    cartProducts = [];
     container = null;
 
     constructor(selector) {
         this.container = document.querySelector(selector);
         this._openCart();
-        this._addItem();
+        this._fetchData()
+            .then(() => this._addItem());
     }
 
-    _openCart(){
+    _fetchData() {
+        return fetch(`${API}/getBasket.json`)
+            .then(result => result.json())
+            .then(data => {
+                for (let product of data['contents']) {
+                    this.cartProducts.push(new CartItem(product));
+                }
+            })
+    }
+
+    _openCart() {
         document.querySelector('.btn-cart').addEventListener('click', () => {
-           document.querySelector('.cart').classList.toggle('hidden');
+            document.querySelector('.cart').classList.toggle('hidden');
         });
     }
 
-    // addItem() - добавление товара в корзину. Обработка клика по кнопке купить и добаление объекта товара в массив cartItems array
-
-    _addItem(){
-       document.querySelectorAll('.buy-btn').forEach(el => { el.addEventListener('click',  () => {
-           //
-           // this.cartProducts.push(cartProduct);
-           // this.container.insertAdjacentHTML('afterbegin', cartProduct.render())
-           })
-       })
-    }
-
-    //_deleteItem() -  удаление товара из корзины. Обработка клика по кнопке "Удалить", определение удаляемого товара, удаление
-
-
-    // _calculateCartCost() - подсчет стоимости товаров в корзине
-    _calculateCartCost() {
-        return this.cartProducts.reduce((sum, itemPrice) => sum += itemPrice.price, 0 )
+    _addItem() {
+        document.querySelectorAll('.buy-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const productId = +btn.getAttribute("data-id")
+                // const productItem = document.querySelectorAll('.product-item').find((el) =>{
+                //     if(el.attributes === productId){
+                //         return;
+                //     }
+                // })
+                for (let product of this.cartProducts) {
+                    if (product.id === productId) {
+                        if (product.rendered) {
+                            product.changeCountProductsUp();
+                            product.updateCartItem();
+                            continue;
+                        }
+                        this.container.insertAdjacentHTML('beforeend', product.render())
+                    }
+                }
+            })
+        })
     }
 }
+    //_deleteItem() -  удаление товара из корзины. Обработка клика по кнопке "Удалить", определение удаляемого товара, удаление
+
+    // _calculateCartCost() - подсчет стоимости товаров в корзине
+
 
 class CartItem {
     title = '';
     price = 0;
     id = 0;
     img = '';
+    rendered = false;
+    quantity = 0;
 
     constructor(product, img = 'https://placehold.it/50x50') {
-        ({ title: this.title, price: this.price, id: this.id } = product);
+        ({ product_name: this.title, price: this.price, id_product: this.id, quantity:this.quantity } = product);
         this.img = img;
     }
 
     render() {
-        return `<div class="cart-item">
+        this.rendered = true;
+        return `<div class="cart-item" data-id = "${this.id}">
                  <img src="${this.img}" alt="${this.title}">
                  <div class="cart-desc">
                      <h3>${this.title}</h3>
-                     <p>${this.price}</p>
+                     <form action="#">
+                        <input class="cart-item-count" type="number" min="1" value="${this.quantity}">
+                     </form>
+                     <p class="cart-item-price">${this.price}</p>
                      <button class="del-btn" data-id = "${this.id}">X</button>
                  </div>
              </div>`
     }
-    // some - cartItems array
 
-    // render() -  создание разметки для выпадающей корзины
+    // changeCountProducts() - изменение количества товара в корзине. Обработка поля input  в разметке товара и изменение общей стоимости одного товара в зависимости от его количества
+    changeCountProductsUp(){
+        this.quantity += 1;
+    }
 
-
-    // _changeCountProducts() - изменение количества товара в корзине. Обработка поля input  в разметке товара и изменение общей стоимости одного товара в зависимости от его количества
-
+    updateCartItem(){
+     return   document.querySelector('.cart-item-count').value = this.quantity,
+        document.querySelector('.cart-item-price').textContent = this.quantity*this.price;
+    }
 }
+
 
 const list = new Products('.products');
 const  cart = new Cart('.cart');
-console.log(list._sumProducts())
-
-
-
-
