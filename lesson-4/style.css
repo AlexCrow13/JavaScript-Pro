@@ -1,0 +1,16 @@
+.hidden {
+    visibility: hidden;
+}
+form{
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.red {
+    border: 2px solid red;
+}
+
+.err-name, .err-phone, .err-mail {
+    color: red;
+}

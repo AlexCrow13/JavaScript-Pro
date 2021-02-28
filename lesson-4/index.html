@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <title>Lesson 4</title>
+</head>
+<body>
+    <h1>Text to Replace</h1>
+    <p>
+        One: 'Hi Mary.'<br>
+        Two: 'Oh, hi.'<br>
+        One: 'How are you doing?'<br>
+        Two: 'I'm doing alright. How about you?'<br>
+        One: 'Not too bad. The weather is great isn't it?'<br>
+        Two: 'Yes. It's absolutely beautiful today.'<br>
+        One: 'I wish it was like this more frequently.'<br>
+        Two: 'Me too.'<br>
+        One: 'So where are you going now?'<br>
+        Two: 'I'm going to meet a friend of mine at the department store.'<br>
+        One: 'Going to do a little shopping?'<br>
+        Two: 'Yeah, I have to buy some presents for my parents.'<br>
+        One: 'What's the occasion?'<br>
+        Two: 'It's their anniversary.'<br>
+        One: 'That's great. Well, you better get going. You don't want to be late.'<br>
+        Two: 'I'll see you next time.'<br>
+        One: 'Sure. Bye.'
+    </p>
+
+
+    <form action="#">
+        <label for="name">Name</label>
+        <input id="name" type="text" placeholder="Введите имя">
+        <p class="err-name hidden">Поле должно содержать только буквы</p>
+        <label for="phone">Phone</label>
+        <input id="phone" type="text" placeholder="Введите телефон">
+        <p class="err-phone hidden">Введите телефон в формате +7(000)000-0000</p>
+        <label for="mail">E-mail</label>
+        <input id="mail" type="text" placeholder="Введите e-mail">
+        <p class="err-mail hidden">E-mail имеет вид mymail@mail.ru, или my.mail@mail.ru, или my-mail@mail.ru</p>
+        <label for="text">Text</label>
+        <textarea id="text"></textarea>
+        <input type="submit">
+    </form>
+
+    <script src="script.js" ></script>
+</body>
+</html>
