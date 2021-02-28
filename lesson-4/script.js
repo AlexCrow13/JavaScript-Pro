@@ -33,7 +33,7 @@ class Form {
     filterMail(value){
         const block = document.querySelector('#mail');
         const error = document.querySelector('.err-mail');
-        const regexp = /^(.+)@([a-z]+\.[a-z]{2,3})$/i;
+        const regexp = /^([\w.-]+)@([a-z]+\.[a-z]{2,3})$/i;
         this._viewError(!regexp.test(value), block, error)
     }
 
