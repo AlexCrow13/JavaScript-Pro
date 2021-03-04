@@ -6,7 +6,9 @@ const App = {
             API: `https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses`,
             catalogUrl: '/catalogData.json',
             products: [],
-            imgCatalog: 'https://placehold.it/200x150'
+            imgCatalog: 'https://placehold.it/200x150',
+            isVisibleCart: true,
+            imgCart: 'https://placehold.it/50x100',
         }
     },
     methods: {
