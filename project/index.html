@@ -11,17 +11,13 @@
         <header>
             <div class="logo">E-shop</div>
             <div class="cart">
-                <form action="#" method="post" class="search-form" @submit.prevent="">
-                    <input type="text" class="search-field" v-model.lazy="userSearch">
-                    <button class="btn-search" type="submit">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </form>
+                <search ref="search"></search>
                 <cart ref="cart"></cart>
             </div>
         </header>
         <main>
-            <products ref="products"></products>
+            <error ref="error"></error>
+           <slot></slot> <products ref="products"></products>
         </main>
     </div>
     <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/all.js" integrity="sha384-0pzryjIRos8mFBWMzSSZApWtPl/5++eIfzYmTgBBmXYdhvxPc+XcFEk+zJwDgWbP" crossorigin="anonymous"></script>

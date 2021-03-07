@@ -1,15 +1,18 @@
 import {Cart} from "./Cart.js";
 import {Products} from "./Products.js";
+import {Search} from "./Search.js";
+import {Error} from "./Error.js";
 
 const App = {
     components: {
       Cart,
-      Products
+      Products,
+      Search,
+      Error
     },
     data() {
         return {
-            API: `https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses`,
-            userSearch: ''
+            API: `https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses`
         }
     },
     provide() {
@@ -22,6 +25,10 @@ const App = {
         getJson(url){
             return fetch(url)
                 .then(result => result.json())
+                .catch(err => {
+                    console.log(err);
+                    this.$refs.error.viewError(err);
+                })
         }
     },
 };
