@@ -1,5 +1,3 @@
-
-
 const App = {
     data() {
         return {
@@ -7,8 +5,11 @@ const App = {
             catalogUrl: '/catalogData.json',
             products: [],
             imgCatalog: 'https://placehold.it/200x150',
+            searchLine: '',
             isVisibleCart: true,
             imgCart: 'https://placehold.it/50x100',
+            cartProducts: [],
+            cartUrl: '/getBasket.json',
         }
     },
     methods: {
@@ -18,8 +19,43 @@ const App = {
                 .catch(e => console.log(e));
         },
         addProduct(product) {
-            console.log(product);
-            console.log(product.id_product);
+            this.getJson(`${this.API}/addToBasket.json`)
+                .then(data => {
+                    if (data.result) {
+                        let find = this.cartProducts.find(el => el.id_product === product.id_product);
+                        if (find) {
+                            find.quantity++;
+                            return;
+                        }
+                        let prod = Object.assign({quantity: 1}, product);
+                        this.cartProducts.push(prod);
+                    } else {
+                        console.log('some error');
+                    }
+                })
+        },
+        removeProduct(product) {
+            this.getJson(`${this.API}/deleteFromBasket.json`)
+                .then(data => {
+                    if (data.result) {
+                        if (product.quantity > 1) {
+                            product.quantity--;
+                            return;
+                        }
+                        this.cartProducts.splice(this.cartProducts.indexOf(product), 1);
+                    } else {
+                        console.log('some error');
+                    }
+                })
+        },
+        filterGoods(value){
+            const regexp = new RegExp(value, 'i');
+            return this.products.filter(el => regexp.test(el.product_name));
+        }
+    },
+    computed: {
+        filterGoodsArr(){
+            return this.filterGoods(this.searchLine);
         }
     },
     mounted() {
@@ -33,6 +69,12 @@ const App = {
             .then(data => {
                 for (let el of data) {
                     this.products.push(el);
+                }
+            });
+        this.getJson(`${this.API + this.cartUrl}`)
+            .then(data => {
+                for (let el of data.contents) {
+                    this.cartProducts.push(el);
                 }
             });
     }
